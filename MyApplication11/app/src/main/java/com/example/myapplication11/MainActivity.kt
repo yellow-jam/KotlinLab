@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView // 임포트 주의 androidx
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.myapplication11.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +20,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-
+        // 프래그먼트
+        val fragmentManager : FragmentManager = supportFragmentManager
+        val transaction : FragmentTransaction = fragmentManager.beginTransaction()
+        var fragment = Fragment1()
+        transaction.add(R.id.fragment_content, fragment)
+        transaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
