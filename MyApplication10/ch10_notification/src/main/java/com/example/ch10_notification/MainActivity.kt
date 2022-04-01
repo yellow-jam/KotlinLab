@@ -3,6 +3,8 @@ package com.example.ch10_notification
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.AudioAttributes
@@ -11,6 +13,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
 import com.example.ch10_notification.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +59,33 @@ class MainActivity : AppCompatActivity() {
             val builderStyle = NotificationCompat.BigPictureStyle() // 이미지 스타일 정의
             builderStyle.bigPicture(bigPic)
             builder.setStyle(builderStyle)
+
+            // 0406 알림 터치 이벤트
+            val replyIntent = Intent(this, ReplyReceiver::class.java)
+            val replyPendingIntent = PendingIntent.getBroadcast(this, 30, replyIntent, PendingIntent.FLAG_MUTABLE)
+            //builder.setContentIntent(replyPendingIntent)
+            //윗줄을 지우면 터치 시에는 인텐트 실행 X, 밑의 액션으로만 동작
+
+            // 원격 입력 (알림에서 사용자 입력 받기)
+            val remoteInput = RemoteInput.Builder("key_text_reply").run{
+                setLabel("답장")
+                build()
+            }
+            // 알림 액션 (아이콘, 타이틀, 인텐트) 최대 3개까지 설정
+            builder.addAction(
+                NotificationCompat.Action.Builder(
+                    android.R.drawable.stat_notify_more,
+                    "Action",
+                    replyPendingIntent
+                ).build()
+            )
+            builder.addAction(
+                NotificationCompat.Action.Builder(
+                    R.drawable.send,
+                    "답장",
+                    replyPendingIntent
+                    ).addRemoteInput(remoteInput).build() // FLAG_MUTABLE
+            )
 
             manager.notify(11, builder.build())
         }
