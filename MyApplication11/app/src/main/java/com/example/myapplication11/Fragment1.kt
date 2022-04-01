@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication11.databinding.Fragment1Binding
+import com.example.myapplication11.databinding.ItemRecyclerviewBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,6 +20,24 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Fragment1.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+class MyViewHolder(val binding : ItemRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root)
+class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    override fun getItemCount(): Int {
+        return datas.size
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return MyViewHolder(ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)) //layoutInflater를 만들어야 함
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val binding = (holder as MyViewHolder).binding
+        binding.itemTv.text = datas[position]
+    }
+}
+
+
 class Fragment1 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -34,7 +56,16 @@ class Fragment1 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_1, container, false)
+
+        val datas = mutableListOf<String>()
+        for(i in 1..9){
+            datas.add("item $i")
+        }
+        val binding = Fragment1Binding.inflate(inflater, container, false) // 프래그먼트의 뷰 바인딩
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.adapter = MyAdapter(datas)
+
+        return binding.root
     }
 
     companion object {
