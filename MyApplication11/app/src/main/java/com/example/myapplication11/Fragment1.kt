@@ -1,10 +1,19 @@
 package com.example.myapplication11
 
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication11.databinding.Fragment1Binding
@@ -21,7 +30,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
+// (1) 뷰 홀더: 리사이클러 뷰 객체
 class MyViewHolder(val binding : ItemRecyclerviewBinding) : RecyclerView.ViewHolder(binding.root)
+// (2) 어댑터 : 항목 구성
 class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     override fun getItemCount(): Int {
         return datas.size
@@ -37,6 +48,40 @@ class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerV
     }
 }
 
+// (4) 리사이클러 뷰 꾸미기
+class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDraw(c, parent, state)
+        c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.stadium), 0f, 0f, null)
+    }
+
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDrawOver(c, parent, state)
+        val width = parent.width
+        val height = parent.height
+
+        val dr: Drawable? = ResourcesCompat.getDrawable(context.resources, R.drawable.kbo, null)
+        val d_width = dr?.intrinsicWidth
+        val d_height = dr?.intrinsicHeight
+
+        val left = width/2 - d_width?.div(2) as Int
+        val top = height/2 - d_height?.div(2) as Int
+
+        c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.kbo), left.toFloat(), top.toFloat(), null)
+    }
+
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        super.getItemOffsets(outRect, view, parent, state)
+        outRect.set(10, 10, 10, 0) // 얼마나 떨어진 위치에 연결해서 사각형을 그리는가
+        view.setBackgroundColor(Color.parseColor("#49c1ff"))
+        ViewCompat.setElevation(view, 20.0f)
+    }
+}
 
 class Fragment1 : Fragment() {
     // TODO: Rename and change types of parameters
@@ -62,8 +107,19 @@ class Fragment1 : Fragment() {
             datas.add("item $i")
         }
         val binding = Fragment1Binding.inflate(inflater, container, false) // 프래그먼트의 뷰 바인딩
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.adapter = MyAdapter(datas)
+
+        /* (3) 레이아웃 매니저 */
+        //binding.recyclerView.layoutManager = LinearLayoutManager(activity)  // 디폴트: 수직 리스트
+
+        val layoutManager = LinearLayoutManager(activity)
+        // layoutManager.orientation = LinearLayoutManager.HORIZONTAL // 수평 리스트
+
+        // val layoutManager = GridLayoutManager(activity, 2) // 그리드레이아웃매니저(액티비티, column)
+
+        binding.recyclerView.layoutManager = layoutManager // (3) 레이아웃 설정
+        
+        binding.recyclerView.adapter = MyAdapter(datas) // (2) 어댑터 설정
+        binding.recyclerView.addItemDecoration(MyDecoration(activity as Context)) // (4) 아이템데커레이션 설정
 
         return binding.root
     }
