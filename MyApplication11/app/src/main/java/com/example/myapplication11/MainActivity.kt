@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView // 임포트 주의 androidx
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
 
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    lateinit var toggle : ActionBarDrawerToggle // 11-6 액션바드로우 토글
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -40,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         //val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        // 11-6 액션바드로우 토글
+        toggle = ActionBarDrawerToggle(this, binding.drawer, R.string.drawer_open, R.string.drawer_close)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toggle.syncState()
 
         // 11 프래그먼트 매니저
         /*
@@ -78,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)) return true // 햄버거 버튼이 눌렸다면 true
         when (item.itemId) {
             // 코틀린코드에서추가한메뉴: 2번째 매개변수 - 메뉴 항목 식별자 // menu 리소스 xml로 추가한메뉴: 태그의 id로
             R.id.menu1 -> {
