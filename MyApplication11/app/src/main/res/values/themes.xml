@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MyApplication11" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MyApplication11" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ff9966</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

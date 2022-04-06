@@ -40,10 +40,13 @@ class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerV
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)) //layoutInflater를 만들어야 함
+        // parent는 프래그먼트가 붙어있는 액티비티(MainActivity)를 의미함
     }
 
+    // 데이터와 뷰 홀더를 연결
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding = (holder as MyViewHolder).binding
+        // position은 뷰 홀더가 가진 뷰 중 몇 번째인지
+        val binding = (holder as MyViewHolder).binding // 타입 캐스팅 필요
         binding.itemTv.text = datas[position]
     }
 }
@@ -52,7 +55,7 @@ class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerV
 class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
-        c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.stadium), 0f, 0f, null)
+        //c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.stadium), 0f, 0f, null)
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
@@ -82,7 +85,7 @@ class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
         ViewCompat.setElevation(view, 20.0f)
     }
 }
-
+ /* 프래그먼트 본문 */
 class Fragment1 : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -102,11 +105,14 @@ class Fragment1 : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        val datas = mutableListOf<String>()
+        // 목록에 대한 정보를 만들고 MyAdapter로 전달
+        val datas = mutableListOf<String>()  // MyAdapter(datas:의 타입)
         for(i in 1..9){
             datas.add("item $i")
         }
-        val binding = Fragment1Binding.inflate(inflater, container, false) // 프래그먼트의 뷰 바인딩
+
+        /* (0) 프래그먼트의 뷰 바인딩 */
+        val binding = Fragment1Binding.inflate(inflater, container, false)
 
         /* (3) 레이아웃 매니저 */
         //binding.recyclerView.layoutManager = LinearLayoutManager(activity)  // 디폴트: 수직 리스트

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {  // 버전 26 이상
                 val ch_id = "one-channel"
                 val channel = NotificationChannel(ch_id, "My Channel One", NotificationManager.IMPORTANCE_DEFAULT)
+                // 알림 상세 설정
                 channel.description = "My Channel One 소개" // 알림 설명
                 channel.setShowBadge(true) // 뱃지 알림
                 channel.enableLights(true) // led 불빛 알림
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
                 channel.enableVibration(true) // 진동 알림
                 channel.vibrationPattern = longArrayOf(100,200,100,200) // 진동 알림 패턴
                 // (100, 200), (100, 200) : (진동 x 시간, 진동 시간) 단위 msec(밀리초)
+
+                // 소리 알림
                 val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val audio_attr = AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -49,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             } else {  // 버전 25 이하
                 builder = NotificationCompat.Builder(this)
             }
+
+
             // 알림 객체 설정
             builder.setSmallIcon(R.drawable.small)
             builder.setWhen(System.currentTimeMillis()) // 시각 출력(현재 시각)
@@ -64,22 +69,23 @@ class MainActivity : AppCompatActivity() {
             val replyIntent = Intent(this, ReplyReceiver::class.java)
             val replyPendingIntent = PendingIntent.getBroadcast(this, 30, replyIntent, PendingIntent.FLAG_MUTABLE)
             //builder.setContentIntent(replyPendingIntent)
-            //윗줄을 지우면 터치 시에는 인텐트 실행 X, 밑의 액션으로만 동작
+            //윗줄을 지우면 알림 단순 터치 시에는 인텐트 실행 X, 밑의 액션으로만 동작
 
             // 원격 입력 (알림에서 사용자 입력 받기)
             val remoteInput = RemoteInput.Builder("key_text_reply").run{
                 setLabel("답장")
                 build()
             }
-            // 알림 액션 (아이콘, 타이틀, 인텐트) 최대 3개까지 설정
-            builder.addAction(
+
+            /* 알림 액션 (아이콘, 타이틀, 인텐트) 최대 3개까지 설정 */
+            builder.addAction( // 1
                 NotificationCompat.Action.Builder(
                     android.R.drawable.stat_notify_more,
                     "Action",
                     replyPendingIntent
                 ).build()
             )
-            builder.addAction(
+            builder.addAction( // 2
                 NotificationCompat.Action.Builder(
                     R.drawable.send,
                     "답장",
@@ -89,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 
             manager.notify(11, builder.build())
         }
-
 
     }
 }

@@ -22,19 +22,16 @@ class MainActivity : AppCompatActivity() {
             fragments = listOf(Fragment1(), Fragment2(), Fragment3())
         }
         override fun getItemCount(): Int {
-            //TODO("Not yet implemented")
             return fragments.size
         }
-
         override fun createFragment(position: Int): Fragment {
-            //TODO("Not yet implemented")
             return fragments[position]
         }
     }
 
-
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     lateinit var toggle : ActionBarDrawerToggle // 11-6 액션바드로우 토글
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -42,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         //val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
         // 11-6 액션바드로우 토글
         toggle = ActionBarDrawerToggle(this, binding.drawer, R.string.drawer_open, R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -50,24 +48,25 @@ class MainActivity : AppCompatActivity() {
         // 11 프래그먼트 매니저
         /*
         val fragmentManager : FragmentManager = supportFragmentManager
-        val transaction : FragmentTransaction = fragmentManager.beginTransaction()
+        val transaction : FragmentTransaction = fragmentManager.beginTransaction() // 트랜잭션으로 프래그먼트 관리
         var fragment = Fragment1()
-        transaction.add(R.id.fragment_content, fragment)
-        transaction.commit()
+        transaction.add(R.id.fragment_content, fragment) // 트랜잭션에.추가(이 영역에, 이 프래그먼트를)
+        transaction.commit() // 동작 실행
         */
 
         // 11-5 뷰 페이저2
         binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 가로 방향으로 프래그먼트 전환
-        binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 가로 방향으로 프래그먼트 전환
         binding.viewpager.adapter = MyFragmentAdapter(this)
-
-
     }
 
+    /* 액션 바 메뉴 */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //val menuItem1 : MenuItem? = menu?.add(0,0,0, "메뉴1") // 두 번째 Int가 itemId(메뉴 항목 식별자)
         //val menuItem2 : MenuItem? = menu?.add(0,1,0, "메뉴2") // 두 번째 Int가 itemId
+        // 메뉴 만들기: 코틀린 코드에 쓰거나 res/menu/menu_main.xml
         menuInflater.inflate(R.menu.menu_main, menu) // 두 번째 - 어디에 적용할 것인지: 옵션메뉴에 적용하겠다 menu
+
+        // 액션 뷰 이용: SearchView - menu_main.xml
         val menuSearch = menu?.findItem(R.id.menu_search)
         val searchView = menuSearch?.actionView as SearchView
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -89,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             // 코틀린코드에서추가한메뉴: 2번째 매개변수 - 메뉴 항목 식별자 // menu 리소스 xml로 추가한메뉴: 태그의 id로
             R.id.menu1 -> {
                 binding.tv1.setTextColor(Color.BLUE)
-                binding.tv1.setText("이게됨?")
+                binding.tv1.setText("텍스트 변경?")
                 true
             }
             R.id.menu2 -> {
