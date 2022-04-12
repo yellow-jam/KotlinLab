@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication11.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
     class MyFragmentAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity){
@@ -57,6 +58,11 @@ class MainActivity : AppCompatActivity() {
         // 11-5 뷰 페이저2
         binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 가로 방향으로 프래그먼트 전환
         binding.viewpager.adapter = MyFragmentAdapter(this)
+
+        // 12-2 탭 레이아웃을 뷰 페이저와 연동
+        TabLayoutMediator(binding.tab1, binding.viewpager){
+            tab, position -> tab.text = "TAB ${position+1}"
+        }.attach()
     }
 
     /* 액션 바 메뉴 */
