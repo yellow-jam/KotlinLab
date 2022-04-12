@@ -3,6 +3,7 @@ package com.example.myapplication11
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -63,6 +64,12 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(binding.tab1, binding.viewpager){
             tab, position -> tab.text = "TAB ${position+1}"
         }.attach()
+
+        // 12-3 내비게이션 드로어에 이벤트 리스너 추가
+        binding.mainDrawerView.setNavigationItemSelectedListener {
+            Log.d("mobileApp", "Navigation selected... ${it.title}")
+            true
+        }
     }
 
     /* 액션 바 메뉴 */
