@@ -56,6 +56,15 @@
             android:id="@+id/viewpager"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab"
+            android:layout_margin="10dp"
+            app:icon="@android:drawable/ic_input_add"
+            android:text="Extended FAB"
+            app:layout_anchor="@id/viewpager"
+            app:layout_anchorGravity="bottom|right" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <!--숨겨져 있던 부분-->
 

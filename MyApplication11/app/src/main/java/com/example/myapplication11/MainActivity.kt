@@ -70,6 +70,14 @@ class MainActivity : AppCompatActivity() {
             Log.d("mobileApp", "Navigation selected... ${it.title}")
             true
         }
+
+        // 12-4 플로팅 버튼
+        binding.fab.setOnClickListener{
+            when(binding.fab.isExtended) {
+                true -> binding.fab.shrink()
+                false -> binding.fab.extend()
+            }
+        }
     }
 
     /* 액션 바 메뉴 */
