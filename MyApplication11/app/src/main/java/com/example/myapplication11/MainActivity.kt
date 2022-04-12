@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                binding.tv1.text = p0
+//                binding.tv1.text = p0
                 return true
             }
         })
@@ -87,8 +87,8 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             // 코틀린코드에서추가한메뉴: 2번째 매개변수 - 메뉴 항목 식별자 // menu 리소스 xml로 추가한메뉴: 태그의 id로
             R.id.menu1 -> {
-                binding.tv1.setTextColor(Color.BLUE)
-                binding.tv1.setText("텍스트 변경?")
+//                binding.tv1.setTextColor(Color.BLUE)
+//                binding.tv1.setText("텍스트 변경?")
                 true
             }
             R.id.menu2 -> {
