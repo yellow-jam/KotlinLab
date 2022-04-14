@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             }
             //Log.d("mobileApp", d3!!)
         }
-
         binding.fab.setOnClickListener{
             val intent = Intent(this, AddActivity::class.java)
             intent.putExtra("data1", "mobile")
@@ -37,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             //startActivityForResult(intent, 10) // 호출
             requestLauncher.launch(intent)
         }
-
         datas = savedInstanceState?.let{
             it.getStringArrayList("mydatas")?.toMutableList()
         } ?:let{
@@ -51,7 +49,6 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
     }
-
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         outState.putStringArrayList("mydatas", ArrayList(datas))

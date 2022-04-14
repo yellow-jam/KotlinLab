@@ -21,16 +21,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.button1.setOnClickListener {
             //Toast.makeText(this, "첫번째 버튼의 토스트입니다", Toast.LENGTH_LONG).show()
             val toast = Toast.makeText(this, "첫번째 버튼의 토스트입니다", Toast.LENGTH_LONG)
             toast.setText("수정된 토스트입니다.")
             toast.duration = Toast.LENGTH_SHORT
-            // API 30 > toast.setGravity(Gravity.TOP, 20, 20)
+            // toast.setGravity(Gravity.TOP, 20, 20) // API 30 이후는 지원하지 않음
             toast.addCallback(
 
                 object: Toast.Callback() {
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
                         super.onToastHidden()
                         Log.d("mobileApp", "토스트가 사라집니다")
                     }
-
                     override fun onToastShown() {
                         super.onToastShown()
                         Log.d("mobileApp", "토스트가 나타납니다")
@@ -84,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 버튼4 - 대화상자
         binding.button4.setOnClickListener {
             AlertDialog.Builder(this).run {
                 setTitle("알림창 테스트")
@@ -97,6 +95,7 @@ class MainActivity : AppCompatActivity() {
             }.setCanceledOnTouchOutside(false) // true: 창 바깥 터치 시 창 사라지게 하기 허용
         }
 
+        // 버튼5 - 선택목록 대화상자
         val items = arrayOf<String>("사과", "딸기", "복숭아", "토마토")
         binding.button5.setOnClickListener {
             AlertDialog.Builder(this).run {
@@ -113,6 +112,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 버튼6 - 체크박스 대화상자
         binding.button6.setOnClickListener {
             AlertDialog.Builder(this).run {
                 setTitle("멀티 아이템 목록 선택")
@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 버튼7 - 라디오버튼 대화상자
         binding.button7.setOnClickListener {
             AlertDialog.Builder(this).run {
                 setTitle("싱글 아이템 목록 선택")
@@ -145,6 +146,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 버튼8 - 커스텀 대화상자
         val dialogBinding = DialogInputBinding.inflate(layoutInflater)
         val alert = AlertDialog.Builder(this)
             .setTitle("입력")

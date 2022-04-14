@@ -13,7 +13,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
-import androidx.core.app.RemoteInput
+import androidx.core.app.RemoteInput  // 원격 입력
 import com.example.ch10_notification.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,13 +26,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.button1.setOnClickListener {
             val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            val builder : NotificationCompat.Builder
+            val builder : NotificationCompat.Builder // 버전에 따라 초기화 필요
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {  // 버전 26 이상
                 val ch_id = "one-channel"
-                val channel = NotificationChannel(ch_id, "My Channel One", NotificationManager.IMPORTANCE_DEFAULT)
+                val channel = NotificationChannel(ch_id, "My Channel One", NotificationManager.IMPORTANCE_DEFAULT)  // (id, 이름, 중요도)
+
                 // 알림 상세 설정
-                channel.description = "My Channel One 소개" // 알림 설명
-                channel.setShowBadge(true) // 뱃지 알림
+                channel.description = "My Channel One 소개" // 알림 설명 문자열
+                channel.setShowBadge(true) // 앱 아이콘에 알림 뱃지 출력 여부
                 channel.enableLights(true) // led 불빛 알림
                 channel.lightColor = Color.RED  // led 색상
                 channel.enableVibration(true) // 진동 알림
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     .setUsage(AudioAttributes.USAGE_ALARM)
                     .build()
                 channel.setSound(uri, audio_attr) // (uri, 오디오 속성)
+
                 // 채널을 매니저에 등록
                 manager.createNotificationChannel(channel)
                 builder = NotificationCompat.Builder(this, ch_id)
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             builderStyle.bigPicture(bigPic)
             builder.setStyle(builderStyle)
 
-            // 0406 알림 터치 이벤트
+            // 0406 알림 터치 이벤트 - 브로드캐스트 설정 필요
             val replyIntent = Intent(this, ReplyReceiver::class.java)
             val replyPendingIntent = PendingIntent.getBroadcast(this, 30, replyIntent, PendingIntent.FLAG_MUTABLE)
             //builder.setContentIntent(replyPendingIntent)
@@ -90,9 +92,10 @@ class MainActivity : AppCompatActivity() {
                     R.drawable.send,
                     "답장",
                     replyPendingIntent
-                    ).addRemoteInput(remoteInput).build() // FLAG_MUTABLE
+                ).addRemoteInput(remoteInput).build() // FLAG_MUTABLE
             )
 
+            /* 알림 발생 */
             manager.notify(11, builder.build())
         }
 
