@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    lateinit var toggle : ActionBarDrawerToggle // 11-6 액션바드로우 토글
+    lateinit var toggle : ActionBarDrawerToggle // 11-6 액션바드로어 토글
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         //val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbar)  // xml에 등록한 툴바 적용, 액션 바 없애기는 theme 파일에서
 
-        // 11-6 액션바드로우 토글
+        // 11-6 액션바드로어 토글
         toggle = ActionBarDrawerToggle(this, binding.drawer, R.string.drawer_open, R.string.drawer_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toggle.syncState()
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         */
 
         // 11-5 뷰 페이저2
-        binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 가로 방향으로 프래그먼트 전환
+        binding.viewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL  // 가로 방향으로 프래그먼트 전환
         binding.viewpager.adapter = MyFragmentAdapter(this)
 
         // 12-2 탭 레이아웃을 뷰 페이저와 연동
@@ -82,9 +82,10 @@ class MainActivity : AppCompatActivity() {
 
     /* 액션 바 메뉴 */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        //val menuItem1 : MenuItem? = menu?.add(0,0,0, "메뉴1") // 두 번째 Int가 itemId(메뉴 항목 식별자)
-        //val menuItem2 : MenuItem? = menu?.add(0,1,0, "메뉴2") // 두 번째 Int가 itemId
-        // 메뉴 만들기: 코틀린 코드에 쓰거나 res/menu/menu_main.xml
+        // 메뉴 만들기 방법 (1) 코틀린 코드에 작성
+//        val menuItem1 : MenuItem? = menu?.add(0,0,0, "메뉴1") // 두 번째 Int가 itemId(메뉴 항목 식별자)
+//        val menuItem2 : MenuItem? = menu?.add(0,1,0, "메뉴2") // 두 번째 Int가 itemId
+        // 메뉴 만들기 방법 (2) res/menu/menu_main.xml
         menuInflater.inflate(R.menu.menu_main, menu) // 두 번째 - 어디에 적용할 것인지: 옵션메뉴에 적용하겠다 menu
 
         // 액션 뷰 이용: SearchView - menu_main.xml
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(toggle.onOptionsItemSelected(item)) return true // 햄버거 버튼이 눌렸다면 true
+        if(toggle.onOptionsItemSelected(item)) return true // 11-6 토글 - 햄버거 버튼이 눌렸다면 true
         when (item.itemId) {
             // 코틀린코드에서추가한메뉴: 2번째 매개변수 - 메뉴 항목 식별자 // menu 리소스 xml로 추가한메뉴: 태그의 id로
             R.id.menu1 -> {

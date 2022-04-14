@@ -31,10 +31,13 @@
                 android:layout_height="wrap_content"
                 android:text="tab3" />
         </com.google.android.material.tabs.TabLayout>
+
+        <!--프래그먼트 영역-->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/tabContent" />
+
     </LinearLayout>
 
 </FrameLayout>

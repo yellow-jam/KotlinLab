@@ -49,13 +49,14 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-
+        <!--프래그먼트 영역 - 뷰 페이저로 처리-->
         <androidx.viewpager2.widget.ViewPager2
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewpager"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +67,7 @@
             app:layout_anchor="@id/viewpager"
             app:layout_anchorGravity="bottom|right" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <!--숨겨져 있던 부분-->
 
     <com.google.android.material.navigation.NavigationView

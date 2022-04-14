@@ -55,11 +55,12 @@ class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerV
 class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
-        //c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.stadium), 0f, 0f, null)
+        //c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.stadium), 0f, 0f, null)  // 배경 설정
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
+        // 스마트폰의 크기 / 2 - 이미지 크기 / 2
         val width = parent.width
         val height = parent.height
 
@@ -70,7 +71,7 @@ class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
         val left = width/2 - d_width?.div(2) as Int
         val top = height/2 - d_height?.div(2) as Int
 
-        c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.kbo), left.toFloat(), top.toFloat(), null)
+        c.drawBitmap(BitmapFactory.decodeResource(context.resources, R.drawable.kbo), left.toFloat(), top.toFloat(), null)  // 이미지 그리기
     }
 
     override fun getItemOffsets(
@@ -85,6 +86,7 @@ class MyDecoration(val context: Context) : RecyclerView.ItemDecoration() {
         ViewCompat.setElevation(view, 20.0f)
     }
 }
+
  /* 프래그먼트 본문 */
 class Fragment1 : Fragment() {
     // TODO: Rename and change types of parameters
