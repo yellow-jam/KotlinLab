@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra("data1", "mobile")
+            intent.putExtra("data2", "app")
             startActivity(intent)
         }
     }
