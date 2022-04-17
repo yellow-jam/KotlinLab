@@ -2,6 +2,8 @@ package com.example.myapplication13re
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.example.myapplication13re.databinding.ActivityAddBinding
 
 class AddActivity : AppCompatActivity() {
@@ -16,10 +18,27 @@ class AddActivity : AppCompatActivity() {
 
         binding.tv.text = (d1+d2)
 
+        /*
         binding.button1.setOnClickListener {
             intent.putExtra("test", "world")
             setResult(RESULT_OK, intent)
             finish()
         }
+        */
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menu_add_save) {
+            intent.putExtra("test", "world")
+            setResult(RESULT_OK, intent)
+            finish()
+            return true
+        }
+        return false
     }
 }
