@@ -1,5 +1,7 @@
 package com.example.myapplication13re
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -26,6 +28,13 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
         */
+
+        binding.button2.setOnClickListener {
+            val intent = Intent()
+            intent.action = "ACTION_EDIT"
+            intent.data = Uri.parse("http://www.google.com")
+            startActivity(intent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
