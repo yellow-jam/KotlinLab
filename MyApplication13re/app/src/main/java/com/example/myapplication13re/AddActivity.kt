@@ -7,10 +7,11 @@ import android.view.MenuItem
 import com.example.myapplication13re.databinding.ActivityAddBinding
 
 class AddActivity : AppCompatActivity() {
+    lateinit var binding: ActivityAddBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityAddBinding.inflate(layoutInflater)
+        binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         var d1 = intent.getStringExtra("data1")
@@ -34,7 +35,7 @@ class AddActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.menu_add_save) {
-            intent.putExtra("test", "world")
+            intent.putExtra("result", binding.addEditView.text.toString())
             setResult(RESULT_OK, intent)
             finish()
             return true

@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val requestLauncher:ActivityResultLauncher<Intent>
             = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val d3 = it.data!!.getStringExtra("test")
+            val d3 = it.data!!.getStringExtra("result")
             Log.d("MobileApp", d3!! )
         }
 
