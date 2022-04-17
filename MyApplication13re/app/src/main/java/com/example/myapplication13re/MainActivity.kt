@@ -1,5 +1,6 @@
 package com.example.myapplication13re
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,5 +17,10 @@ class MainActivity : AppCompatActivity() {
         val datas:MutableList<String>? = null
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.mainRecyclerView.adapter = MyAdapter(datas)
+
+        binding.fab.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
