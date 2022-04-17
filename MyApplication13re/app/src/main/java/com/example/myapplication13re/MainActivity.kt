@@ -3,13 +3,17 @@ package com.example.myapplication13re
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication13re.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    var datas:MutableList<String>? = null
+    lateinit var adapter : MyAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -17,14 +21,13 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val datas:MutableList<String>? = null
-        binding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.mainRecyclerView.adapter = MyAdapter(datas)
-
         val requestLauncher:ActivityResultLauncher<Intent>
             = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val d3 = it.data!!.getStringExtra("result")
-            Log.d("MobileApp", d3!! )
+            val d3 = it.data!!.getStringExtra("result")?.let{
+                datas?.add(it)
+                adapter.notifyDataSetChanged()
+            }
+            //Log.d("MobileApp", d3!! )
         }
 
         binding.fab.setOnClickListener {
@@ -34,8 +37,25 @@ class MainActivity : AppCompatActivity() {
             //startActivityForResult(intent, 10)//startActivity(intent)
             requestLauncher.launch(intent)
         }
+
+        datas = savedInstanceState?.let {
+            it.getStringArrayList("mydatas")?.toMutableList()
+        } ?:let{
+            mutableListOf<String>()
+        }
+
+        binding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = MyAdapter(datas)
+        binding.mainRecyclerView.adapter = adapter
+        binding.mainRecyclerView.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        )
     }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putStringArrayList("mydatas", ArrayList(datas))
+    }
     /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
