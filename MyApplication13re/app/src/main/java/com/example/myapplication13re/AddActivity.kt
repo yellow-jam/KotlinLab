@@ -15,5 +15,11 @@ class AddActivity : AppCompatActivity() {
         var d2 = intent.getStringExtra("data2")
 
         binding.tv.text = (d1+d2)
+
+        binding.button1.setOnClickListener {
+            intent.putExtra("test", "world")
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
 }

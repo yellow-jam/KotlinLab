@@ -10,6 +10,15 @@
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="40dp"
         android:text="hello...ADDACTIVITY" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="돌아가기"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
