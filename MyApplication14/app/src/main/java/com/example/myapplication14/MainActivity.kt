@@ -1,5 +1,6 @@
 package com.example.myapplication14
 
+import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,5 +16,10 @@ class MainActivity : AppCompatActivity() {
         val receiver = MyReceiver()
         val filter = IntentFilter("ACTION_RECEIVER")
         registerReceiver(receiver, filter)  // (리시버, 필터)
+
+        binding.button.setOnClickListener {
+            val intent = Intent(this, MyReceiver::class.java)
+            sendBroadcast(intent)
+        }
     }
 }
