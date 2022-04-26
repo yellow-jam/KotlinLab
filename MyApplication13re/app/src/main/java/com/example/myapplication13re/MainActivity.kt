@@ -1,10 +1,14 @@
 package com.example.myapplication13re
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,6 +24,21 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 13-3 전체 화면 설정
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {  // 버전 >= 30
+            window.setDecorFitsSystemWindows(false)  // 전체화면으로 설정
+            val controller = window.insetsController
+            if(controller != null){
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars()) // 상태바 or 하단 내비게이션바를 가림
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE  // 스와이프 동작 -> 숨겨져 있던 부분이 나옴
+            }
+        }
+        else {  // 버전 <= 29
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+
 
         // 사후 처리 메소드로 [받기]
         val requestLauncher:ActivityResultLauncher<Intent>
