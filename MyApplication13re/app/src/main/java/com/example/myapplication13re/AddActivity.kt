@@ -24,19 +24,23 @@ class AddActivity : AppCompatActivity() {
         /*
         binding.button1.setOnClickListener {
             intent.putExtra("test", "world")
-            setResult(RESULT_OK, intent)
+            setResult(RESULT_OK, intent)  // [돌려보내기1]
             finish()
         }
         */
 
+        // 암시적 인텐트 단순 실행
         binding.button2.setOnClickListener {
             val intent = Intent()
             intent.action = "ACTION_EDIT"
             intent.data = Uri.parse("http://www.google.com")
             startActivity(intent)
         }
+
+
     }
 
+    // 메뉴 설정
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_add, menu)
         return super.onCreateOptionsMenu(menu)
@@ -45,7 +49,7 @@ class AddActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.menu_add_save) {
             intent.putExtra("result", binding.addEditView.text.toString())
-            setResult(RESULT_OK, intent)
+            setResult(RESULT_OK, intent) // [돌려보내기]
             finish()
             return true
         }

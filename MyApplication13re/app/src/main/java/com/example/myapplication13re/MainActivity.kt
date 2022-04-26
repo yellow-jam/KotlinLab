@@ -21,21 +21,23 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 사후 처리 메소드로 [받기]
         val requestLauncher:ActivityResultLauncher<Intent>
             = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val d3 = it.data!!.getStringExtra("result")?.let{
+            it.data!!.getStringExtra("result")?.let{
                 datas?.add(it)
                 adapter.notifyDataSetChanged()
             }
             //Log.d("MobileApp", d3!! )
         }
 
+
         binding.fab.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
             intent.putExtra("data1", "mobile")
             intent.putExtra("data2", "app")
-            //startActivityForResult(intent, 10)//startActivity(intent)
-            requestLauncher.launch(intent)
+            //startActivityForResult(intent, 10) // [보내기1] //startActivity(intent) // 단순 보내기
+            requestLauncher.launch(intent) // 사후 처리 메소드로 [보내기]
         }
 
         datas = savedInstanceState?.let {
@@ -51,11 +53,13 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
     }
-
+    // [Bundle 받기]
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         outState.putStringArrayList("mydatas", ArrayList(datas))
     }
+
+    // [받기1]
     /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
