@@ -2,6 +2,7 @@ package com.example.myapplication14
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.BitmapFactory
 import android.os.BatteryManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,13 +33,27 @@ class MainActivity : AppCompatActivity() {
             if(status == BatteryManager.BATTERY_STATUS_CHARGING){
                 val chargePlug = getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
                 when(chargePlug){
-                    BatteryManager.BATTERY_PLUGGED_AC -> Log.d("mobileApp", "AC CHARGED")
-                    BatteryManager.BATTERY_PLUGGED_USB -> Log.d("mobileApp", "USB CHARGED")
+                    BatteryManager.BATTERY_PLUGGED_AC -> {
+                        Log.d("mobileApp", "AC CHARGED")
+                        binding.chargingResult.text = "AC CHARGED"
+                        binding.chargingIV.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.ac))
+                    }
+                    BatteryManager.BATTERY_PLUGGED_USB -> {
+                        Log.d("mobileApp", "USB CHARGED")
+                        binding.chargingResult.text = "USB CHARGED"
+                        binding.chargingIV.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.usb))
+                    }
                 }
             }
             else {
                 Log.d("mobileApp", "DISCHARGING")
+                binding.chargingResult.text = "DISCHARGING"
             }
+            // 배터리 퍼센트 정보 가져오기
+            val level = getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            val battPerc = level/scale.toFloat() * 100
+            binding.percentResult.text = "$battPerc %"
         }
         binding.button.setOnClickListener {
             val intent = Intent(this, MyReceiver::class.java)
