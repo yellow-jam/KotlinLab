@@ -30,6 +30,12 @@ class AddActivity : AppCompatActivity() {
         }
         */
 
+        // 13-4 태스크 제어
+        binding.button5.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
+
         // 암시적 인텐트 단순 실행
         binding.button2.setOnClickListener {
             val intent = Intent()
@@ -48,6 +54,11 @@ class AddActivity : AppCompatActivity() {
             manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
 
+    }
+
+    // 13-4 싱글 탑
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 
     // 메뉴 설정

@@ -23,6 +23,13 @@
 
     <Button
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/button5"
+        android:text="다시 호출하기" />
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button2"
         android:text="암시적 인텐트" />
