@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import com.example.myapplication13re.databinding.ActivityAddBinding
 
 class AddActivity : AppCompatActivity() {
@@ -37,6 +38,15 @@ class AddActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 13-3 소프트키보드 제어
+        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        binding.button3.setOnClickListener {
+            binding.addEditView.requestFocus()  // 강제로 포커스 설정
+            manager.showSoftInput(binding.addEditView, InputMethodManager.SHOW_IMPLICIT)
+        }
+        binding.button4.setOnClickListener {
+            manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
 
     }
 
