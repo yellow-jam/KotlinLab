@@ -14,7 +14,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val receiver = MyReceiver()
-        val filter = IntentFilter("ACTION_RECEIVER")
+        val filter = IntentFilter("ACTION_RECEIVER").apply {
+            addAction(Intent.ACTION_BATTERY_LOW)
+            addAction(Intent.ACTION_BATTERY_OKAY)
+            addAction(Intent.ACTION_BATTERY_CHANGED)
+            addAction(Intent.ACTION_POWER_CONNECTED)
+            addAction(Intent.ACTION_POWER_DISCONNECTED)
+        }
         registerReceiver(receiver, filter)  // (리시버, 필터)
 
         binding.button.setOnClickListener {
