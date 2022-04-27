@@ -21,6 +21,18 @@ class MainActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 if(it.resultCode == RESULT_OK){
                     Log.d("mobileApp", "${it.data?.data}")
+                    val cursor = contentResolver.query(
+                        it!!.data!!.data!!,
+                        arrayOf<String>(
+                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                            ContactsContract.CommonDataKinds.Phone.NUMBER),
+                        null,null,null
+                    )
+                    if(cursor!!.moveToFirst()){  // 가지고 온 결과가 여러 개일 수 있는데 그중 첫 번째로 이동하겠다
+                        val name = cursor?.getString(0)
+                        val phone = cursor?.getString(1)
+                        binding.addrTv.text = "이름 : $name, 전화번호 : $phone"
+                    }
                 }
             }
         binding.addrBtn.setOnClickListener {
