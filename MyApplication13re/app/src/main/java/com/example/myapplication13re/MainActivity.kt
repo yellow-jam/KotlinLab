@@ -2,6 +2,8 @@ package com.example.myapplication13re
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication13re.databinding.ActivityMainBinding
@@ -20,14 +23,20 @@ import java.io.File
 import java.io.OutputStreamWriter
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding : ActivityMainBinding
     var datas:MutableList<String>? = null
     lateinit var adapter : MyAdapter
+    lateinit var sharedPreferences : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val bgColor = sharedPreferences.getString("color", "")  // settingFragment에서 선택한 값이 들어옴
+        binding.rootLayout.setBackgroundColor(Color.parseColor(bgColor))
 
         // 13-3 전체 화면 설정
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {  // 버전 >= 30
@@ -125,6 +134,11 @@ class MainActivity : AppCompatActivity() {
     }
      */
 
+    override fun onResume() {
+        super.onResume()
+        val bgColor = sharedPreferences.getString("color", "")
+        binding.rootLayout.setBackgroundColor(Color.parseColor((bgColor)))
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
