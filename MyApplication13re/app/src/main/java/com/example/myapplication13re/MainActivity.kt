@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication13re.databinding.ActivityMainBinding
 import kotlinx.coroutines.selects.select
+import java.io.BufferedReader
+import java.io.File
+import java.io.OutputStreamWriter
 
 class MainActivity : AppCompatActivity() {
     var datas:MutableList<String>? = null
@@ -78,8 +81,21 @@ class MainActivity : AppCompatActivity() {
                 setIcon(android.R.drawable.ic_dialog_info)
                 setSingleChoiceItems(items, 1, object:DialogInterface.OnClickListener{
                     override fun onClick(p0: DialogInterface?, p1: Int) {
-                        if(p1 == 0){
+                        if(p1 == 0){  // 내장 메모리
+                            // 저장
+                            val file = File(filesDir, "test.txt")
+                            val writeStream: OutputStreamWriter = file.writer()
+                            writeStream.write("hello android")
+                            writeStream.write("${items[p1]}")
+                            for(i in datas!!.indices)
+                                writeStream.write(datas!![i])
+                            writeStream.flush()
 
+                            // 읽어 오기
+                            val readStream : BufferedReader = file.reader().buffered()
+                            readStream.forEachLine {
+                                Log.d("mobileApp", "$it")
+                            }
                         }
                     }
                 })
