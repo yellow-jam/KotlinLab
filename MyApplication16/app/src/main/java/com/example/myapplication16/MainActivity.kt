@@ -6,15 +6,22 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import com.example.myapplication16.databinding.ActivityMainBinding
+import java.io.File
 import java.lang.Exception
+import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var filePath : String  // 카메라 연동 방법(2)의 파일 경로 선언
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -87,7 +94,36 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             requestCameraThumbnailLauncher.launch(intent)
         }
-        
+
+        // 16-2 카메라 앱 연동하기 - 방법 (2) 파일로 공유하기
+        val requestCameraFileLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult() ){
+            val calRatio = calculateInSampleSize(Uri.fromFile(File(filePath)), 150, 150)
+            val option = BitmapFactory.Options()
+            option.inSampleSize = calRatio
+            val bitmap = BitmapFactory.decodeFile(filePath, option)
+            bitmap?.let{
+                binding.userIdImg.setImageBitmap(bitmap)
+            } ?:let{
+                Log.d("mobileApp", "bitmap null")
+            }
+        }
+        val timeS:String = SimpleDateFormat("yyyymmdd_HHmmss").format(Date())
+        val storeDir:File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val file = File.createTempFile("JPEG_${timeS}_", ".jpeg", storeDir) // 3번째 인자: 저장할 곳
+        filePath = file.absolutePath  // 파일 경로!! 선언은 MainActivity 상단에
+        val photoURI: Uri = FileProvider.getUriForFile(
+            this,
+            "com.example.myapplication16.FileProvider", // 매니페스트 파일 <provider> 태그의 authorities 속성값
+            file
+        )
+
+        binding.cameraBtn2.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)  // 두 번째 인자: URI
+            requestCameraFileLauncher.launch(intent)
+        }
+
     }
 
     // 저자의 메소드: 주어진 Uri의 크기를 reqWidth, reqHeight로 줄이기 위한 옵션비율값(inSampleSize)을 계산
