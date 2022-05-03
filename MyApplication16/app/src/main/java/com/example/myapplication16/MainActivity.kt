@@ -124,6 +124,13 @@ class MainActivity : AppCompatActivity() {
             requestCameraFileLauncher.launch(intent)
         }
 
+        /* 지도 앱 연동 */
+        binding.mapBtn.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo: 37.562952, 126.9779451"))  // 지도 프로토콜 geo - 위치정보 위도, 경도
+            startActivity(intent)
+        }
+        
+
     }
 
     // 저자의 메소드: 주어진 Uri의 크기를 reqWidth, reqHeight로 줄이기 위한 옵션비율값(inSampleSize)을 계산
