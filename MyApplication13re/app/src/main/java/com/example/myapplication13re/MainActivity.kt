@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication13re.databinding.ActivityMainBinding
+import kotlinx.coroutines.selects.select
 
 class MainActivity : AppCompatActivity() {
     var datas:MutableList<String>? = null
@@ -59,11 +60,21 @@ class MainActivity : AppCompatActivity() {
             requestLauncher.launch(intent) // 사후 처리 메소드로 [보내기]
         }
 
+        datas = mutableListOf<String>()
+        val db = DBHelper(this).readableDatabase
+        val cursor = db.rawQuery("select * from todo_tb", null)
+        while (cursor.moveToNext()){
+            datas?.add(cursor.getString(1))  // 테이블 속성: 0번째 id, 1번째 todo(string)
+        }
+        db.close()
+
+        /* 번들 대신 데이터베이스 사용
         datas = savedInstanceState?.let {
             it.getStringArrayList("mydatas")?.toMutableList()
         } ?:let{
             mutableListOf<String>()
         }
+         */
 
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = MyAdapter(datas)
@@ -72,11 +83,13 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
     }
+    /* 번들 대신 데이터베이스 사용
     // [Bundle 받기]
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
         outState.putStringArrayList("mydatas", ArrayList(datas))
     }
+     */
 
     // [받기1]
     /*

@@ -69,7 +69,15 @@ class AddActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.menu_add_save) {
-            intent.putExtra("result", binding.addEditView.text.toString())
+            val inputData = binding.addEditView.text.toString()
+            // DB에 저장하기
+            val db = DBHelper(this).writableDatabase  // 데이터 추가 - write
+            db.execSQL("insert into todo_tb (todo) values (?)", arrayOf<String>(inputData))
+            // 테이블 이름은 DBHelper에서 만든 테이블 이름과 같아야 함
+            // "?", 변수
+            db.close()
+
+            intent.putExtra("result", inputData)
             setResult(RESULT_OK, intent) // [돌려보내기]
             finish()
             return true
