@@ -1,6 +1,7 @@
 package com.example.myapplication16
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -74,6 +75,19 @@ class MainActivity : AppCompatActivity() {
             intent.type = "image/*"
             requestGalleryLauncher.launch(intent)
         }
+
+        // 16-2 카메라 앱 연동하기 - 방법 (1) 데이터로 가져오기
+        val requestCameraThumbnailLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()){
+            val bitmap = it?.data?.extras?.get("data") as Bitmap
+            binding.userIdImg.setImageBitmap(bitmap)
+        }
+
+        binding.cameraBtn1.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            requestCameraThumbnailLauncher.launch(intent)
+        }
+        
     }
 
     // 저자의 메소드: 주어진 Uri의 크기를 reqWidth, reqHeight로 줄이기 위한 옵션비율값(inSampleSize)을 계산
