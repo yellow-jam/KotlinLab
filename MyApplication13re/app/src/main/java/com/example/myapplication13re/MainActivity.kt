@@ -1,5 +1,6 @@
 package com.example.myapplication13re
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication13re.databinding.ActivityMainBinding
@@ -67,6 +69,24 @@ class MainActivity : AppCompatActivity() {
             datas?.add(cursor.getString(1))  // 테이블 속성: 0번째 id, 1번째 todo(string)
         }
         db.close()
+
+        // 17-2 파일에 저장하기 버튼
+        val items = arrayOf<String>("내장")
+        binding.fileBtn.setOnClickListener {
+            AlertDialog.Builder(this).run{
+                setTitle("저장 위치 선택")
+                setIcon(android.R.drawable.ic_dialog_info)
+                setSingleChoiceItems(items, 1, object:DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        if(p1 == 0){
+
+                        }
+                    }
+                })
+                setPositiveButton("선택", null)
+                show()
+            }
+        }
 
         /* 번들 대신 데이터베이스 사용
         datas = savedInstanceState?.let {
