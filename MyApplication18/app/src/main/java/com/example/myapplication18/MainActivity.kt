@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // permission 사용자 허가
         checkPermissions()
