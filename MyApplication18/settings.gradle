@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "My Application18"
 include ':app'
+include ':ch18_network'
