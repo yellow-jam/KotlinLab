@@ -1,5 +1,6 @@
 package com.example.ch18_network
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -55,6 +56,8 @@ class RetrofitFragment : Fragment() {
             override fun onResponse(call: Call<PageListModel>, response: Response<PageListModel>) {
                 if(response.isSuccessful){
                     Log.d("mobileApp", "$response")
+                    binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(activity)
+                    binding.retrofitRecyclerView.adapter = MyAdapter(activity as Context, response.body()?.data)
                 }
             }
 
@@ -62,8 +65,7 @@ class RetrofitFragment : Fragment() {
                 Log.d("mobileApp", "onFailure")
             }
         })
-        binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(activity)
-        //binding.retrofitRecyclerView.adapter =
+
         return binding.root
     }
 
