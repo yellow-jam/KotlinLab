@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val fragment = RetrofitFragment()
+        val xmlfragment = XmlFragment()
         val bundle = Bundle()  // 프래그먼트에 값 전달 - 번들 객체 이용
         binding.searchBtn.setOnClickListener {
             when(binding.rGroup.checkedRadioButtonId){
@@ -18,10 +19,18 @@ class MainActivity : AppCompatActivity() {
                 R.id.xml -> bundle.putString("returnType", "xml")
                 else -> bundle.putString("returnType", "json")
             }
-            fragment.arguments = bundle
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_content, fragment)  // (어디에, 어떤 프래그먼트를)
-                .commit()
+            if(binding.rGroup.checkedRadioButtonId == R.id.json) {
+                fragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_content, fragment)  // (어디에, 어떤 프래그먼트를)
+                    .commit()
+            }
+            else if(binding.rGroup.checkedRadioButtonId == R.id.xml) {
+                xmlfragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_content, xmlfragment)  // (어디에, 어떤 프래그먼트를)
+                    .commit()
+            }
         }
     }
 }

@@ -19,12 +19,12 @@
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="JSON"
+                android:text="코로나19 예방접종 위탁의료기관 - JSON"
                 android:id="@+id/json" />
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="XML"
+                android:text="코로나19병원 - XML"
                 android:id="@+id/xml" />
         </RadioGroup>
         <Button

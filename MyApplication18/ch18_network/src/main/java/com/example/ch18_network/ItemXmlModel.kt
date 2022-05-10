@@ -42,8 +42,11 @@ data class myItems(
 data class myItem(
     @PropertyElement
     val yadmNm : String?,
+    @PropertyElement
     val telno : String?,
+    @PropertyElement
     val sidoNm : String?,
+    @PropertyElement
     val sgguNm : String?
 ){
     constructor() : this(null, null, null, null)
