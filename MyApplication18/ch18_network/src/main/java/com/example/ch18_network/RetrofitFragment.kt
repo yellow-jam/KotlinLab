@@ -1,6 +1,7 @@
 package com.example.ch18_network
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ch18_network.databinding.FragmentRetrofitBinding
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +51,17 @@ class RetrofitFragment : Fragment() {
             "pYVi5WRhkWtEwEK/I4kgN7b4rNT0ilJBAD0ZrcvBAAFFgV3kqfOSQ9cQn5eEczFo+9O1Q1g5b0UiGp10XfJcOA=="
         )
 
+        call?.enqueue(object : Callback<PageListModel>{
+            override fun onResponse(call: Call<PageListModel>, response: Response<PageListModel>) {
+                if(response.isSuccessful){
+                    Log.d("mobileApp", "$response")
+                }
+            }
+
+            override fun onFailure(call: Call<PageListModel>, t: Throwable) {
+                Log.d("mobileApp", "onFailure")
+            }
+        })
         binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(activity)
         //binding.retrofitRecyclerView.adapter =
         return binding.root
