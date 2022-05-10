@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ch18_network.databinding.FragmentRetrofitBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +36,11 @@ class RetrofitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_retrofit, container, false)
+        val binding = FragmentRetrofitBinding.inflate(inflater, container, false)
+
+        binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(activity)
+        //binding.retrofitRecyclerView.adapter =
+        return binding.root
     }
 
     companion object {
