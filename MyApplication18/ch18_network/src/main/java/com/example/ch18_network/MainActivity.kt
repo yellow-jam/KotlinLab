@@ -9,5 +9,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.searchBtn.setOnClickListener {
+            when(binding.rGroup.checkedRadioButtonId){
+                R.id.json -> ""
+                R.id.xml -> ""
+                else -> "json"
+            }
+        }
     }
 }
