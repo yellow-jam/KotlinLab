@@ -10,6 +10,6 @@ interface NetworkService {
         @Query("page") page:Long,
         @Query("perPage") perPage:Int,
         @Query("returnType") returnType:String,
-        @Query("ServiceKey") apiKey:String
+        @Query("serviceKey") apiKey:String
     ) : Call<PageListModel>
 }

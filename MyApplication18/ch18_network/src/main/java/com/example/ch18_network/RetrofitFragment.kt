@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ch18_network.databinding.FragmentRetrofitBinding
+import retrofit2.Call
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +38,15 @@ class RetrofitFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val binding = FragmentRetrofitBinding.inflate(inflater, container, false)
+
+
+        val returnType = arguments?.getString("returnType") // MainActivity에서 Bundle에 넣어둔 returnType 사용
+        val call: Call<PageListModel> = MyApplication.networkService.getList(
+            1,
+            10,
+            returnType!!,
+            "pYVi5WRhkWtEwEK/I4kgN7b4rNT0ilJBAD0ZrcvBAAFFgV3kqfOSQ9cQn5eEczFo+9O1Q1g5b0UiGp10XfJcOA=="
+        )
 
         binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(activity)
         //binding.retrofitRecyclerView.adapter =
