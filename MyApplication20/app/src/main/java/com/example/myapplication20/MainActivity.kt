@@ -3,7 +3,9 @@ package com.example.myapplication20
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.myapplication20.databinding.ActivityMainBinding
+import com.kakao.sdk.common.util.Utility
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -12,6 +14,11 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        /* 카카오 로그인 해시 키 구하기
+        val keyHash = Utility.getKeyHash(this)
+        Log.d("mobileApp", keyHash)
+        */
 
         binding.btnLogin.setOnClickListener {
             // 로그인: 별도의 액티비티를 만들어 처리
