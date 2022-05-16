@@ -15,6 +15,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             // 로그인: 별도의 액티비티를 만들어 처리
             val intent = Intent(this, AuthActivity::class.java)
+            if(binding.btnLogin.text.equals("로그인")) // 로그아웃 상태
+                intent.putExtra("data", "logout")
+            else if(binding.btnLogin.text.equals("로그아웃")) // 로그인 상태
+                intent.putExtra("data", "login")
             startActivity(intent)
         }
     }
