@@ -2,9 +2,12 @@ package com.example.myapplication20
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.myapplication20.databinding.ActivityAuthBinding
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
 
 class AuthActivity : AppCompatActivity() {
     lateinit var binding: ActivityAuthBinding
@@ -82,6 +85,51 @@ class AuthActivity : AppCompatActivity() {
             MyApplication.email = null
             finish()  // 메인액티비티로 돌아감
         }
+
+        /* 카카오 로그인 */
+        // -------------------------------------------
+        binding.btnKakaoLogin.setOnClickListener {
+            // 토큰 정보 보기
+            UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+                if (error != null) {
+                    Log.e("mobileApp", "토큰 정보 보기 실패", error)
+                }
+                else if (tokenInfo != null) {
+                    Log.i("mobileApp", "토큰 정보 보기 성공")
+                    finish()  // 메인액티비티로 돌아감 (Auth액티비티 종료)
+                }
+            }
+            // -------------------------------------------
+            // 카카오계정으로 로그인 공통 callback 구성
+            // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                if (error != null) {
+                    Log.e("mobileApp", "카카오계정으로 로그인 실패", error)
+                } else if (token != null) {
+                    Log.i("mobileApp", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                    // -------------------------------------------
+                    // 사용자 정보 요청 (기본)
+                    UserApiClient.instance.me { user, error ->
+                        if (error != null) {
+                            Log.e("mobileApp", "사용자 정보 요청 실패", error)
+                        }
+                        else if (user != null) {
+                            Log.i("mobileApp", "사용자 정보 요청 성공" +
+                                    "\n회원번호: ${user.id}" +
+                                    "\n이메일: ${user.kakaoAccount?.email}" +
+                                    "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                                    "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+                        }
+                    }
+                }
+            }
+            // -------------------------------------------
+            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+                UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
+            } else {  // 사용자의 폰에 카카오톡이 없는 경우
+                UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+            }
+        }
     }
 
     // 모드에 따라 화면이 다르게 보이도록 하는 함수
@@ -96,6 +144,7 @@ class AuthActivity : AppCompatActivity() {
                 authPasswordEditView.visibility = View.GONE
                 signBtn.visibility = View.GONE
                 loginBtn.visibility = View.GONE
+                btnKakaoLogin.visibility = View.GONE
             }
         } else if(mode.equals("logout")){
             binding.run{
@@ -107,6 +156,7 @@ class AuthActivity : AppCompatActivity() {
                 authPasswordEditView.visibility = View.VISIBLE
                 signBtn.visibility = View.GONE
                 loginBtn.visibility = View.VISIBLE
+                btnKakaoLogin.visibility = View.VISIBLE
             }
         } else if(mode.equals("signin")){
             binding.run{
@@ -117,6 +167,7 @@ class AuthActivity : AppCompatActivity() {
                 authPasswordEditView.visibility = View.VISIBLE
                 signBtn.visibility = View.VISIBLE
                 loginBtn.visibility = View.GONE
+                btnKakaoLogin.visibility = View.GONE
             }
         }
     }
