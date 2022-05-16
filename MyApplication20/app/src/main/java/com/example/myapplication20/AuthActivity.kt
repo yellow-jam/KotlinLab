@@ -3,6 +3,7 @@ package com.example.myapplication20
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.example.myapplication20.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
@@ -16,6 +17,37 @@ class AuthActivity : AppCompatActivity() {
         changeVisibility(intent.getStringExtra("data").toString())
         binding.goSignInBtn.setOnClickListener {
             changeVisibility("signin")
+        }
+
+        /* 회원 가입 기능 */
+        binding.signBtn.setOnClickListener {
+            val email = binding.authEmailEditView.text.toString()
+            val password = binding.authPasswordEditView.text.toString()
+            MyApplication.auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this){ task ->
+                    binding.authEmailEditView.text.clear()
+                    binding.authPasswordEditView.text.clear()
+                    if(task.isSuccessful){  // 회원가입 성공
+                        // 유효한 이메일인가
+                        MyApplication.auth.currentUser?.sendEmailVerification()  // 인증메일 보내기
+                            ?.addOnCompleteListener{ sendTask ->
+                                if(sendTask.isSuccessful){  // 메일 발송이 정상적
+                                    Toast.makeText(baseContext, "회원가입 성공!!.. 메일을 확인해주세요", Toast.LENGTH_SHORT)  // 액티비티에 있는 코드지만 리스너에 붙어있으므로 바로 this 사용 불가
+                                        .show()
+                                    changeVisibility("logout")
+                                }
+                                else{ // 메일발송 실패
+                                    Toast.makeText(baseContext, "메일발송 실패", Toast.LENGTH_SHORT)  // 액티비티에 있는 코드지만 리스너에 붙어있으므로 바로 this 사용 불가
+                                        .show()
+                                    changeVisibility("logout")
+                                }
+                            }
+                    } else {  // 회원가입 실패
+                        Toast.makeText(baseContext, "회원가입 실패", Toast.LENGTH_SHORT)  // 액티비티에 있는 코드지만 리스너에 붙어있으므로 바로 this 사용 불가
+                            .show()
+                        changeVisibility("logout")
+                    }
+                }
         }
     }
 
