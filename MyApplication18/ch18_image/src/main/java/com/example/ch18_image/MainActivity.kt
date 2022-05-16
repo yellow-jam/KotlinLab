@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
                     if(response.isSuccessful){
                         Log.d("mobileApp", "${response.body()}")
                         binding.retrofitRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)  // Call 객체 안에 들어가있기 때문에 @MainActivity 명시
-                        // binding.retrofitRecyclerView.adapter =
+                        binding.retrofitRecyclerView.adapter = MyAdapter(this@MainActivity, response.body()?.data)
                     }
                 }
 
                 override fun onFailure(call: Call<PageListModel>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    Log.d("mobileApp", "onFailure....")
                 }
             })
         }

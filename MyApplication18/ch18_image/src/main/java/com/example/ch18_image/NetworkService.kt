@@ -8,7 +8,7 @@ interface NetworkService {
     @GET("CountryFlagService2/getCountryFlagList2")
     fun getList(
         @Query("pageNo") page:Int,
-        @Query("numOfRow") pageSize:Int,
+        @Query("numOfRows") pageSize:Int,
         @Query("returnType") returnType: String,
         @Query("serviceKey") apiKey:String?
     ): Call<PageListModel>
