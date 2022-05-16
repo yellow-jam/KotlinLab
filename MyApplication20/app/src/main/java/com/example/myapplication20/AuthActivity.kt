@@ -49,6 +49,32 @@ class AuthActivity : AppCompatActivity() {
                     }
                 }
         }
+
+        /* 로그인 기능 */
+        binding.loginBtn.setOnClickListener {
+            val email = binding.authEmailEditView.text.toString()
+            val password = binding.authPasswordEditView.text.toString()
+            MyApplication.auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this){ task ->
+                    binding.authEmailEditView.text.clear()
+                    binding.authPasswordEditView.text.clear()
+                    if(task.isSuccessful){
+                        // 사용자가 이메일 인증을 했는지 확인 -> MyApplication에서 담당
+                        if(MyApplication.checkAuth()){
+                            MyApplication.email = email
+                            finish()  // 메인액티비티로 돌아감
+                        }
+                        else {
+                            Toast.makeText(baseContext, "이메일 인증이 되지 않았습니다.", Toast.LENGTH_SHORT)  // 액티비티에 있는 코드지만 리스너에 붙어있으므로 바로 this 사용 불가
+                            .show()
+                        }
+                    }
+                    else{
+                        Toast.makeText(baseContext, "로그인 실패", Toast.LENGTH_SHORT)  // 액티비티에 있는 코드지만 리스너에 붙어있으므로 바로 this 사용 불가
+                            .show()
+                    }
+                }
+        }
     }
 
     // 모드에 따라 화면이 다르게 보이도록 하는 함수
