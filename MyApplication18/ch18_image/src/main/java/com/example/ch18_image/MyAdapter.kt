@@ -23,6 +23,7 @@ class MyAdapter(val context: Context, val datas: MutableList<ItemModel>?): Recyc
         binding.country.text = model.country_nm
         Glide.with(binding.root)
             .load(model.download_url)
+            .override(400, 300)
             .into(binding.flag)
     }
 }
