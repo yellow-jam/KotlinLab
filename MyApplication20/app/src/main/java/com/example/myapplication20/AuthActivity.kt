@@ -75,6 +75,13 @@ class AuthActivity : AppCompatActivity() {
                     }
                 }
         }
+
+        /* 로그아웃 기능 */
+        binding.logoutBtn.setOnClickListener {
+            MyApplication.auth.signOut()
+            MyApplication.email = null
+            finish()  // 메인액티비티로 돌아감
+        }
     }
 
     // 모드에 따라 화면이 다르게 보이도록 하는 함수
