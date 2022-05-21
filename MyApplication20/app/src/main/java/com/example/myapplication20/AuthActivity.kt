@@ -81,8 +81,19 @@ class AuthActivity : AppCompatActivity() {
 
         /* 로그아웃 기능 */
         binding.logoutBtn.setOnClickListener {
+            // Firebase 이메일 로그아웃
             MyApplication.auth.signOut()
             MyApplication.email = null
+            // 카카오 로그아웃
+            UserApiClient.instance.logout { error ->
+                if(error != null){
+                    Toast.makeText(baseContext, "로그아웃 실패", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(baseContext, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+                }
+            }
+
             finish()  // 메인액티비티로 돌아감
         }
 
