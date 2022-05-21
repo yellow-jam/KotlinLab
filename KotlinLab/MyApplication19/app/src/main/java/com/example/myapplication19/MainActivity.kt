@@ -1,22 +1,66 @@
 package com.example.myapplication19
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback,
+GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener
+{
     var googleMap: GoogleMap? = null
+    lateinit var apiClient: GoogleApiClient
+    lateinit var providerClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         (supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment)!!.getMapAsync(this)
+
+        providerClient = LocationServices.getFusedLocationProviderClient(this)
+        apiClient = GoogleApiClient.Builder(this)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(this)  // MainActivity 상속
+            .addOnConnectionFailedListener(this)  // MainActivity 상속
+            .build()
+        /* 사용자 위치정보 가져오기 */
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()){
+            if(it.all { permission -> permission.value == true}){
+                apiClient.connect()
+            } else {
+                Toast.makeText(this, "권한 거부..", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !== PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) !== PackageManager.PERMISSION_GRANTED)
+            {   // 하나라도 허용되어 있지 않으면 요청하도록
+                requestPermissionLauncher.launch(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE)
+                )
+            }
+        else{
+            apiClient.connect()
+        }
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -38,6 +82,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         markerOp.title("월드컵경기장")
         googleMap?.addMarker(markerOp)
 
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        TODO("Not yet implemented")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
