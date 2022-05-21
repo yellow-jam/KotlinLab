@@ -2,8 +2,10 @@ package com.example.myapplication19
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.OnSuccessListener
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback,
 GoogleApiClient.ConnectionCallbacks,
@@ -66,6 +69,7 @@ GoogleApiClient.OnConnectionFailedListener
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0
 
+        /*
         // googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE  // 위성 지도 모드
         // 지도가 표시되면 보여지는 지역 설정 (위도, 경도)
         val latLng = LatLng(37.568256, 126.897240)
@@ -81,19 +85,35 @@ GoogleApiClient.OnConnectionFailedListener
         markerOp.position(latLng)
         markerOp.title("월드컵경기장")
         googleMap?.addMarker(markerOp)
+        */
 
     }
 
     override fun onConnected(p0: Bundle?) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)===PackageManager.PERMISSION_GRANTED){
+            providerClient.lastLocation.addOnSuccessListener(
+                this@MainActivity,
+                object:OnSuccessListener<Location>{
+                    override fun onSuccess(p0: Location?) {
+                        p0?.let{
+                            val latitude = p0.latitude
+                            val longitude = p0.longitude
+                            Log.d("mobileApp", "lat: $latitude, lng: $longitude")
+                        }
+                    }
+                }
+            )
+            apiClient.disconnect()
+        }
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun onConnectionSuspended(p0: Int) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
