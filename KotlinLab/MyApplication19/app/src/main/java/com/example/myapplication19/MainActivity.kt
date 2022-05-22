@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.ConnectionResult
@@ -69,10 +68,12 @@ GoogleApiClient.OnConnectionFailedListener
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = p0
 
-        /*
+    }
+
+    private fun moveMap(latitude:Double, longitude:Double){
         // googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE  // 위성 지도 모드
         // 지도가 표시되면 보여지는 지역 설정 (위도, 경도)
-        val latLng = LatLng(37.568256, 126.897240)
+        val latLng = LatLng(latitude, longitude)
         val position: CameraPosition = CameraPosition.Builder()
             .target(latLng)
             .zoom(16f)
@@ -83,23 +84,24 @@ GoogleApiClient.OnConnectionFailedListener
         val markerOp = MarkerOptions()
         markerOp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
         markerOp.position(latLng)
-        markerOp.title("월드컵경기장")
+        markerOp.title("My Location")
         googleMap?.addMarker(markerOp)
-        */
-
     }
 
     override fun onConnected(p0: Bundle?) {
+        Log.d("mobileApp", "onConnected")
         //TODO("Not yet implemented")
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)===PackageManager.PERMISSION_GRANTED){
             providerClient.lastLocation.addOnSuccessListener(
                 this@MainActivity,
                 object:OnSuccessListener<Location>{
                     override fun onSuccess(p0: Location?) {
+                        Log.d("mobileApp", "onSuccess")
                         p0?.let{
                             val latitude = p0.latitude
                             val longitude = p0.longitude
                             Log.d("mobileApp", "lat: $latitude, lng: $longitude")
+                            moveMap(latitude, longitude)
                         }
                     }
                 }
